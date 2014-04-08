@@ -2,16 +2,11 @@
     "use strict";
 
     var module = angular.module('chat', []);
-    module.config(['$locationProvider',
-        function($locationProvider) {
-            $locationProvider.html5Mode(true);
-        }
-    ]);
 
     module.controller('index', ['$scope', '$location',
         function($scope, $location) {
             var chat = io.connect('http://localhost:3010/', {
-                query: 'appID=' + ($location.search()).i
+                query: 'appId=' + getParameterByName('i')
             });
 
             chat.on('connect', function() {
@@ -24,4 +19,11 @@
             });
         }
     ]);
+
+    function getParameterByName(name) {
+        name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
+        var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
+            results = regex.exec(location.search);
+        return results == null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
+    }
 })();

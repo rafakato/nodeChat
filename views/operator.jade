@@ -5,22 +5,23 @@ block scripts
     script(type="text/javascript", src="/javascripts/chat/client.js")
 
 block content
-  h1= title
-  p
-    | <span id="totalRooms"></span>
-    | open rooms
-  #connect
-    p Enter a nickname:
-    input#nickname(type="text")
-    input#openRoom(type="button", value="open room")
-  #wait(style="display: none")
-    p 
-      | You are the 
-      | <span id="waitPosition"></span>
-      | in the wait position
-  #connected(style="display: none")
-    #messages
-    input#message(type="text")
-    input#sendMessage(type="button", value="send")
-  
-  input#exit(type="button", value="exit")
+  div(ng-controller="client")
+    h1= title
+    p
+      | <span id="totalRooms"></span>
+      | open rooms
+    #connect
+      p Enter a nickname:
+      input#nickname(type="text")
+      input#openRoom(type="button", value="open room")
+    #wait(style="display: none")
+      p 
+        | You are the 
+        | <span id="waitPosition"></span>
+        | in the wait position
+    #connected(style="display: none")
+      #messages
+      input#message(type="text")
+      input#sendMessage(type="button", value="send")
+    
+    input#exit(type="button", value="exit")
