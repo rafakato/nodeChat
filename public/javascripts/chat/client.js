@@ -21,7 +21,7 @@
                 });
 
                 $scope.chat.on('connect', function() {
-                    $scope.chat.emit('joinRoom', $scope.clientData);
+                    $scope.chat.emit('openChat', $scope.clientData);
                 });
 
                 $scope.chat.on('setWaiting', function(position) {

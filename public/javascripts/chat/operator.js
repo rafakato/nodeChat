@@ -9,10 +9,11 @@
                 name: '',
                 email: ''
             };
+            $scope.rooms = [];
+
             $scope.chat = null;
             $scope.chatStatus = {
-                status: 'idle',
-                waitPosition: -1
+                status: 'idle'
             };
 
             $scope.connect = function() {
@@ -21,8 +22,23 @@
                 });
 
                 $scope.chat.on('connect', function() {
-                    //connected
+                    $scope.chat.emit('setData', $scope.clientData);
+                    $scope.chatStatus.status = 'connected';
                 });
+
+                $scope.chat.on('updateStatus', function(data) {
+                    $scope.status = data;
+                    $scope.$apply();
+                });
+
+                $scope.chat.on('chatOpened', function(room) {
+                    $scope.status = data;
+                    $scope.$apply();
+                });
+            }
+
+            $scope.openChat = function(userId) {
+                $scope.chat.emit('openChat', userId);
             }
         }
     ]);

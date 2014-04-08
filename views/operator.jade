@@ -2,26 +2,21 @@ extends layout
 
 block scripts
     script(type="text/javascript", src="/javascripts/socket.io/socket.io.js")
-    script(type="text/javascript", src="/javascripts/chat/client.js")
+    script(type="text/javascript", src="/javascripts/chat/operator.js")
 
 block content
-  div(ng-controller="client")
+  div(ng-controller="operator")
     h1= title
-    p
-      | <span id="totalRooms"></span>
-      | open rooms
-    #connect
-      p Enter a nickname:
-      input#nickname(type="text")
-      input#openRoom(type="button", value="open room")
-    #wait(style="display: none")
-      p 
-        | You are the 
-        | <span id="waitPosition"></span>
-        | in the wait position
-    #connected(style="display: none")
-      #messages
-      input#message(type="text")
-      input#sendMessage(type="button", value="send")
-    
-    input#exit(type="button", value="exit")
+    #connect(ng-if="chatStatus.status=='idle'")
+      input(type="text", ng-model="clientData.name", placeholder="Enter your name")
+      br
+      input(type="email", ng-model="clientData.email", placeholder="Enter your eamil")
+      br
+      input(type="button", value="access", ng-click="connect()")
+
+    #connected(ng-if="chatStatus.status=='connected'")
+      div
+        p Users Connected to this App: 
+        ul
+          li(ng-repeat="user in status.usersConnected.users")
+            a(href="javascript:void(0);", ng-click="openChat('user.id')") {{user.name}} - ({{user.email}})

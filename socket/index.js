@@ -10,24 +10,34 @@ module.exports = function(port) {
         if (appId) {
             //Getting app
             client.app = getApp(appId);
-            client.app.connectedClients.push(client.id);
 
             //Adding client to app room
             client.join(appId);
             client.type = client.handshake.query.userType || 'system';
 
             //Client events
-            client.on('joinRoom', function(data) {
-                client.data = data;
-                client.app.joinRoom(client);
-            });
-            client.on('getWaitingPosition', function() {
-                client.emit('setWaiting', client.app.getWaitingPosition(client.id));
-            });
+            if (client.type === 'user') {
+                client.on('openChat', function(data) {
+                    setClientData(client, data);
+                    client.app.openChatAs().user(client);
+                });
+                client.on('getWaitingPosition', function() {
+                    client.emit('setWaiting', client.app.getWaitingPosition(client.id));
+                });
+
+            }
 
             //Operator events
+            if (client.type === 'operator') {
+                client.on('openChat', function(userId) {
+                    client.app.openChatAs().operator(client, userId);
+                });
+            }
 
             //Generic events
+            client.on('setData', function(data) {
+                setClientData(client, data);
+            });
             client.on('getStatus', function(appId) {
                 client.app.updateStatusToAppListeners();
             });
@@ -35,10 +45,18 @@ module.exports = function(port) {
             client.on('disconnect', function() {
                 client.app.disconnectClient(client);
             });
+
+            client.app.updateStatusToAppListeners();
         } else {
             console.error('AppId not found');
         }
     });
+
+    function setClientData(client, data) {
+        data.id = client.id;
+        data.type = client.type;
+        client.data = data;
+    }
 
     function getApp(appId) {
         if (!apps[appId]) {
@@ -68,35 +86,44 @@ module.exports = function(port) {
                         return room.operatorId != client.id;
                     })
                 }
-                this.connectedClients = _.without(this.connectedClients, client.id);
+                this.connectedClients = _.filter(this.connectedClients, function(user) {
+                    return user.id != client.id;
+                });
                 chat. in (this.id).emit('updateStatus', this.status());
             },
 
             rooms: [],
-            openNewRoom: function(client) {
-                if (client.type === 'operator') {
-                    return {
-                        id: guid(),
-                        operatorId: client.id,
-                        open: false
-                    }
-                }
-                console.error('This client cannot open a room');
-            },
             getOpenRoom: function() {
-                return _.first(_.filter(this.rooms, function(room) {
-                    return room.open;
+                return _.first(_.where(this.rooms, {
+                    open: true
                 }));
             },
-            joinRoom: function(client) {
-                var room = this.getOpenRoom();
-                if (room) {
-                    room.open = false;
-                    client.join(room.id);
-                } else {
-                    this.addUserToWaiting(client);
+            openChatAs: function() {
+                var parent = this;
+                return {
+                    user: function(client) {
+                        var room = {
+                            id: guid(),
+                            userId: client.id,
+                            operatorId: null,
+                            open: true
+                        };
+                        console.log(parent);
+                        client.join(parent.id + '|' + room.id);
+                        parent.rooms.push(room);
+                        parent.addUserToWaiting(client);
+
+                        parent.connectedClients.push(client.data);
+                        parent.updateStatusToAppListeners();
+                    },
+                    operator: function(client, userId) {
+                        var room = _.findWhere(parent.rooms, {
+                            userId: userId
+                        });
+
+                        console.log(room);
+                    }
                 }
-                this.updateStatusToAppListeners();
             },
 
             usersWaiting: [],
@@ -115,7 +142,14 @@ module.exports = function(port) {
                         return room.open;
                     }).length,
                     usersWaiting: this.usersWaiting.length,
-                    usersConnected: this.connectedClients.length
+                    usersConnected: {
+                        operators: _.where(this.connectedClients, {
+                            type: 'operator'
+                        }),
+                        users: _.where(this.connectedClients, {
+                            type: 'user'
+                        })
+                    }
                 };
             },
             updateStatusToAppListeners: function() {

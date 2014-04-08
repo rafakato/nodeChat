@@ -8,9 +8,9 @@ block content
   div(ng-controller="client")
     h1= title
     #connect(ng-if="chatStatus.status=='idle'")
-      input(type="text", ng-bind="$clientData.name", placeholder="Enter your name")
+      input(type="text", ng-model="clientData.name", placeholder="Enter your name")
       br
-      input(type="text", ng-bind="$clientData.email", placeholder="Enter your eamil")
+      input(type="email", ng-model="clientData.email", placeholder="Enter your eamil")
       br
       input(type="button", value="access", ng-click="connect()")
 

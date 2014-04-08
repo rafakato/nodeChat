@@ -10,7 +10,11 @@ block content
       p Total Rooms: {{status.totalRooms}}
       p Open Rooms: {{status.openRooms}}
       p Users Waiting: {{status.usersWaiting}}
-      p Users Connected to this App: {{status.usersConnected}}
+      div
+        p Users Connected to this App: 
+        ul
+          li(ng-repeat="user in status.usersConnected.users")
+            {{user.name}} - ({{user.email}})
       p
         a(href="/chat/client?i=123") open client
       p

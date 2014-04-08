@@ -10,7 +10,7 @@
             });
 
             chat.on('connect', function() {
-                chat.emit('getStatus');
+
             });
 
             chat.on('updateStatus', function(data) {
