@@ -1,0 +1,24 @@
+extends layout
+
+block scripts
+    script(type="text/javascript", src="/javascripts/socket.io/socket.io.js")
+    script(type="text/javascript", src="/javascripts/chat/client.js")
+
+block content
+  div(ng-controller="client")
+    h1= title
+    #connect(ng-if="chatStatus.status=='idle'")
+      input(type="text", ng-bind="$clientData.name", placeholder="Enter your name")
+      br
+      input(type="text", ng-bind="$clientData.email", placeholder="Enter your eamil")
+      br
+      input(type="button", value="access", ng-click="connect()")
+
+    #wait(ng-if="chatStatus.status=='waiting'")
+      p All operators are busy
+      p You are the {{chatStatus.waitPosition}} in the wait position
+
+    #connected(ng-if="chatStatus.status=='connected'")
+      #messages
+      input#message(type="text")
+      input#sendMessage(type="button", value="send")

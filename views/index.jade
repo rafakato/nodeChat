@@ -1,0 +1,16 @@
+extends layout
+
+block scripts
+    script(type="text/javascript", src="/javascripts/socket.io/socket.io.js")
+    script(type="text/javascript", src="/javascripts/chat/index.js")
+
+block content
+  div(ng-controller="index")
+      h1= title
+      p Total Rooms: {{status.totalRooms}}
+      p Open Rooms: {{status.openRooms}}
+      p Users Waiting: {{status.usersWaiting}}
+      p
+        a(href="/chat/client?i=123") open client
+      p
+        a(href="/chat/operator?i=123") open operator
