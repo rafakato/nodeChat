@@ -16,6 +16,8 @@
                 status: 'idle'
             };
 
+            $scope.chatWindows = [];
+
             $scope.connect = function() {
                 $scope.chat = io.connect('http://localhost:3010/', {
                     query: 'appId=' + getParameterByName('i') + '&userType=operator'
@@ -32,7 +34,17 @@
                 });
 
                 $scope.chat.on('chatOpened', function(room) {
-                    $scope.status = data;
+                    $scope.chatWindows.push({
+                        room: room,
+                        src: '/operator/chatWindow.html',
+                        typingMessage: '',
+                        sendMessage: function() {
+
+                        },
+                        closeChat: function() {
+
+                        }
+                    });
                     $scope.$apply();
                 });
             }

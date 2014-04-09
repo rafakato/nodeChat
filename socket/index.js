@@ -82,9 +82,12 @@ module.exports = function(port) {
                 if (client.type === 'user') {
                     this.usersWaiting = _.without(this.usersWaiting, client.id);
                 } else if (client.type === 'operator') {
-                    this.rooms = _.filter(this.rooms, function(room) {
+                    _.each(_.filter(this.rooms, function(room) {
                         return room.operatorId != client.id;
-                    })
+                    }), function(room) {
+                        room.open = true;
+                        room.operator = null;
+                    });
                 }
                 this.connectedClients = _.filter(this.connectedClients, function(user) {
                     return user.id != client.id;
@@ -101,15 +104,21 @@ module.exports = function(port) {
             openChatAs: function() {
                 var parent = this;
                 return {
+                    _getSocketRoomId: function(room) {
+                        return parent.id + '|' + room.id;
+                    },
                     user: function(client) {
                         var room = {
                             id: guid(),
-                            userId: client.id,
-                            operatorId: null,
-                            open: true
+                            user: client.data,
+                            userTyping: false,
+                            operator: null,
+                            operatorTyping: false,
+                            open: true,
+                            messages: []
                         };
-                        console.log(parent);
-                        client.join(parent.id + '|' + room.id);
+
+                        client.join(this._getSocketRoomId(room));
                         parent.rooms.push(room);
                         parent.addUserToWaiting(client);
 
@@ -117,11 +126,19 @@ module.exports = function(port) {
                         parent.updateStatusToAppListeners();
                     },
                     operator: function(client, userId) {
-                        var room = _.findWhere(parent.rooms, {
-                            userId: userId
+                        var room = _.find(parent.rooms, function(room) {
+                            return room.user.id == userId && room.open;
                         });
+                        if (room) {
+                            var socketRoomId = this._getSocketRoomId(room);
+                            client.join(socketRoomId);
 
-                        console.log(room);
+                            room.open = false;
+                            room.operator = client.data;
+                            chat. in (socketRoomId).emit('chatOpened', room);
+                        } else {
+                            client.emit('chatOpen.error');
+                        }
                     }
                 }
             },
