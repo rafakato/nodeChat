@@ -47,6 +47,13 @@
                     });
                     $scope.$apply();
                 });
+
+                $scope.chat.on('messageReceived', function(data) {
+                    var chatWindow = _.find($scope.chatWindows, function(chatWindow) {
+                        return chatWindow.room.id === data.toRoom;
+                    });
+                    chatWindow.room.messages.push(data.message);
+                });
             }
 
             $scope.openChat = function(userId) {

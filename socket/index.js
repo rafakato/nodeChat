@@ -1,8 +1,11 @@
 module.exports = function(port) {
     var io = require('socket.io').listen(port || 3010),
-        _ = require('underscore');
+        _ = require('underscore'),
+        moment = require('moment');
 
     var apps = {};
+
+    var greetingMessage = 'Hi [user.name], my name is [operator.name].<br />How can I help you?';
 
     var chat = io.sockets.on('connection', function(client) {
         var appId = client.handshake.query.appId;
@@ -24,7 +27,6 @@ module.exports = function(port) {
                 client.on('getWaitingPosition', function() {
                     client.emit('setWaiting', client.app.getWaitingPosition(client.id));
                 });
-
             }
 
             //Operator events
@@ -40,6 +42,9 @@ module.exports = function(port) {
             });
             client.on('getStatus', function(appId) {
                 client.app.updateStatusToAppListeners();
+            });
+            client.on('sendMessage', function(roomId, message) {
+                setClientData(client, roomId, message);
             });
 
             client.on('disconnect', function() {
@@ -87,6 +92,7 @@ module.exports = function(port) {
                     }), function(room) {
                         room.open = true;
                         room.operator = null;
+                        room.messages = [];
                     });
                 }
                 this.connectedClients = _.filter(this.connectedClients, function(user) {
@@ -96,46 +102,66 @@ module.exports = function(port) {
             },
 
             rooms: [],
-            getOpenRoom: function() {
-                return _.first(_.where(this.rooms, {
-                    open: true
-                }));
+            getRoom: function(params) {
+                return _.find(this.rooms, function(room) {
+                    return (room.user.id == params.userId || params.userId === undefined) &&
+                        (room.id == params.roomId || params.roomId === undefined) &&
+                        (room.open == params.onlyOpen || params.onlyOpen === undefined);
+                });
+            },
+            sendMessageToRoom: function(client, roomId, message) {
+                var room = this.getRoom({
+                    roomId: roomId
+                });
+                var message = {
+                    timestamp: moment(),
+                    text: message,
+                    user: client.data
+                };
+                room.messages.push(message);
+                chat. in (room._getSocketRoomId()).emit('messageReceived', {
+                    toRoom: roomId,
+                    message: message
+                });
             },
             openChatAs: function() {
-                var parent = this;
+                var app = this;
                 return {
-                    _getSocketRoomId: function(room) {
-                        return parent.id + '|' + room.id;
-                    },
                     user: function(client) {
                         var room = {
                             id: guid(),
+                            appId: app.id,
                             user: client.data,
                             userTyping: false,
                             operator: null,
                             operatorTyping: false,
                             open: true,
-                            messages: []
+                            messages: [],
+                            _getSocketRoomId: function() {
+                                return this.appId + '|' + this.id;
+                            },
                         };
 
-                        client.join(this._getSocketRoomId(room));
-                        parent.rooms.push(room);
-                        parent.addUserToWaiting(client);
+                        client.join(room._getSocketRoomId());
+                        app.rooms.push(room);
+                        app.addUserToWaiting(client);
 
-                        parent.connectedClients.push(client.data);
-                        parent.updateStatusToAppListeners();
+                        app.connectedClients.push(client.data);
+                        app.updateStatusToAppListeners();
                     },
                     operator: function(client, userId) {
-                        var room = _.find(parent.rooms, function(room) {
-                            return room.user.id == userId && room.open;
+                        var room = app.getRoom({
+                            open: true
                         });
                         if (room) {
-                            var socketRoomId = this._getSocketRoomId(room);
+                            var socketRoomId = room._getSocketRoomId();
                             client.join(socketRoomId);
 
                             room.open = false;
                             room.operator = client.data;
                             chat. in (socketRoomId).emit('chatOpened', room);
+                            var firstMessage = greetingMessage.replace('[user.name]', room.user.name).replace('[operator.name]', room.operator.name);
+                            app.sendMessageToRoom(client, room.id, firstMessage);
                         } else {
                             client.emit('chatOpen.error');
                         }
