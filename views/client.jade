@@ -1,11 +1,11 @@
 extends layout
 
 block scripts
-    script(type="text/javascript", src="/javascripts/require.js", data-main="#{nodePath}/client")
+    script(type="text/javascript", src="/javascripts/require.js", data-main="#{requirePath}/client")
 
 block content
-  div(ng-controller="client")
-    h1= title
+  h1= title
+  div(ng-controller="client", ng-cloak)
     #connect(ng-if="chatStatus.status=='idle'")
       input(type="text", ng-model="clientData.name", placeholder="Enter your name")
       br

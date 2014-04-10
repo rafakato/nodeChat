@@ -28,6 +28,6 @@ node_modules
 bower_components
 
 #RequireJS optimized
-public/javascripts/build
+public/**/build
 
-public/javascripts/lib
+public/**/lib

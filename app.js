@@ -12,23 +12,36 @@ var app = express();
 
 var argv = parseArgs(process.argv.splice(2));
 
-// view engine setup
-app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'jade');
+app.configure(function() {
+    app.set('views', path.join(__dirname, 'views'));
+    app.set('view engine', 'jade');
 
-app.use(logger('dev'));
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded());
-app.use(express.static(path.join(__dirname, 'public')));
-app.use(app.router);
+    app.use(logger('dev'));
+    app.use(bodyParser.json());
+    app.use(bodyParser.urlencoded());
+    app.use(express.methodOverride());
+    app.use(app.router);
+
+    app.use(function(req, res, next) {
+        res.locals({
+            title: "SChat",
+            requirePath: '/javascripts' + (app.get('env') == 'production' ? '/build' : ''),
+            socketPort: app.get('socket-port'),
+            appID: req.query.i
+        });
+        console.log(res.locals);
+        next();
+    });
+
+    app.use(express.static(path.join(__dirname, 'public')));
+    app.use('/chat/', require('./routes'));
+});
 
 app.get('/', function(req, res) {
     res.render('buy', {
-        title: 'Chat',
         appID: req.query.i
     });
 })
-app.use('/chat/', require('./routes'));
 
 /// catch 404 and forwarding to error handler
 app.use(function(req, res, next) {

@@ -1,11 +1,11 @@
 extends layout
 
 block scripts
-    script(type="text/javascript", src="/javascripts/require.js", data-main="#{nodePath}/index")
+    script(type="text/javascript", src="/javascripts/require.js", data-main="#{requirePath}/index")
 
 block content
-  div(ng-controller="index")
-      h1= title
+  h1= title
+  div(ng-controller="index", ng-cloak)
       p Total Rooms: {{status.totalRooms}}
       p Open Rooms: {{status.openRooms}}
       p Users Waiting: {{status.usersWaiting}}

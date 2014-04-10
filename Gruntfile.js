@@ -13,6 +13,14 @@ module.exports = function(grunt) {
                     "angular.js": "angular/angular.js"
                 },
             },
+            angularcss: {
+                options: {
+                    destPrefix: "public/stylesheets/lib/angular"
+                },
+                files: {
+                    "angular-csp.css": "angular/angular-csp.css"
+                },
+            },
             momentjs: {
                 options: {
                     destPrefix: "public/javascripts/lib/momentjs"
