@@ -127,7 +127,7 @@ module.exports = function(grunt) {
                 }
             },
             sass: {
-                files: ['./public/stylesheets/pages/**/*.scss'],
+                files: ['./public/stylesheets/pages/**/*.scss', './public/stylesheets/pages/**/*.sass'],
                 tasks: ['sass'],
                 options: {
                     spawn: false

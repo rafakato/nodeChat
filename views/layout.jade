@@ -15,9 +15,8 @@ html
         };
     block scripts
   body
-    div#loading(ng-if="!loaded")
+    div#loading(ng-show="!loaded")
       div.overlay
-      div.spinner
-        
+      div.spinner        
     block content
     block angular-templates
