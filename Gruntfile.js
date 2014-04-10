@@ -106,7 +106,10 @@ module.exports = function(grunt) {
                     style: 'expanded'
                 },
                 files: {
-                    './public/stylesheets/main.css': './public/stylesheets/pages/main.scss'
+                    './public/stylesheets/index.css': './public/stylesheets/pages/index.scss',
+                    './public/stylesheets/buy.css': './public/stylesheets/pages/buy.scss',
+                    './public/stylesheets/operator.css': './public/stylesheets/pages/operator.scss',
+                    './public/stylesheets/client.css': './public/stylesheets/pages/client.scss'
                 }
             },
             dist_min: {
@@ -114,7 +117,10 @@ module.exports = function(grunt) {
                     style: 'compressed'
                 },
                 files: {
-                    './public/stylesheets/main.min.css': './public/stylesheets/pages/main.scss'
+                    './public/stylesheets/index.min.css': './public/stylesheets/pages/index.scss',
+                    './public/stylesheets/buy.min.css': './public/stylesheets/pages/buy.scss',
+                    './public/stylesheets/operator.min.css': './public/stylesheets/pages/operator.scss',
+                    './public/stylesheets/client.min.css': './public/stylesheets/pages/client.scss'
                 }
             }
         },

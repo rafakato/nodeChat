@@ -4,7 +4,9 @@ module.exports = function() {
 
 
     app.get('/', function(req, res) {
-        res.render('buy');
+        res.render('buy', {
+            pageName: 'buy'
+        });
     });
 
     app.get('/chat', function(req, res) {
@@ -12,7 +14,9 @@ module.exports = function() {
             res.redirect('/');
         }
 
-        res.render('index');
+        res.render('index', {
+            pageName: 'index'
+        });
     });
 
     app.get('/chat/client', function(req, res) {
@@ -20,7 +24,9 @@ module.exports = function() {
             res.redirect('/');
         }
 
-        res.render('client');
+        res.render('client', {
+            pageName: 'client'
+        });
     });
 
     app.get('/chat/operator', function(req, res) {
@@ -28,7 +34,9 @@ module.exports = function() {
             res.redirect('/');
         }
 
-        res.render('operator');
+        res.render('operator', {
+            pageName: 'operator'
+        });
     });
 
     return app;

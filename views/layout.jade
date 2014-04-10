@@ -5,15 +5,16 @@ html
     meta(name="viewport", content="width=device-width, initial-scale=1, user-scalable=no")
     title=title
     if env == 'production'
-      link(rel="stylesheet", href="/stylesheets/main.min.css")
+      link(rel="stylesheet", href="/stylesheets/#{pageName}.min.css")
     else
-      link(rel="stylesheet", href="/stylesheets/main.css")
+      link(rel="stylesheet", href="/stylesheets/#{pageName}.css")
     script(type="text/javascript").
         var configs = {
             appID: '#{appID}',
             socketUrl: '#{socketUrl}'
         };
-    block scripts
+    if pageName
+      script(type="text/javascript", src="/javascripts/require.js", data-main="/javascripts#{buildPath}#{pageName}")
   body
     if appID
       div#loading(ng-if="!loaded")
