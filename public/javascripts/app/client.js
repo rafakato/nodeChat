@@ -18,7 +18,7 @@ require(['angular', 'socket.io'],
 
                 $scope.connect = function() {
                     $scope.chat = io.connect('http://localhost:3010/', {
-                        query: 'appId=' + getParameterByName('i') + '&userType=user'
+                        query: 'appId=' + configs.appID + '&userType=user'
                     });
 
                     $scope.chat.on('connect', function() {
