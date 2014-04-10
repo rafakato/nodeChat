@@ -2,7 +2,12 @@ module.exports = function() {
     var express = require('express'),
         app = express();
 
+
     app.get('/', function(req, res) {
+        res.render('buy');
+    });
+
+    app.get('/chat', function(req, res) {
         if (!req.query.i) {
             res.redirect('/');
         }
@@ -10,7 +15,7 @@ module.exports = function() {
         res.render('index');
     });
 
-    app.get('/client', function(req, res) {
+    app.get('/chat/client', function(req, res) {
         if (!req.query.i) {
             res.redirect('/');
         }
@@ -18,7 +23,7 @@ module.exports = function() {
         res.render('client');
     });
 
-    app.get('/operator', function(req, res) {
+    app.get('/chat/operator', function(req, res) {
         if (!req.query.i) {
             res.redirect('/');
         }
