@@ -6,18 +6,18 @@ block scripts
 block content
   h1= title
   div(ng-controller="client", ng-cloak)
-  #connect(ng-if="chatStatus.status=='idle'")
-    input(type="text", ng-model="clientData.name", placeholder="Enter your name")
-    br
-    input(type="email", ng-model="clientData.email", placeholder="Enter your eamil")
-    br
-    input(type="button", value="access", ng-click="connect()")
+    #connect(ng-if="chatStatus.status=='idle'")
+      input(type="text", ng-model="clientData.name", placeholder="Enter your name")
+      br
+      input(type="email", ng-model="clientData.email", placeholder="Enter your eamil")
+      br
+      input(type="button", value="access", ng-click="connect()")
 
-  #wait(ng-if="chatStatus.status=='waiting'")
-    p All operators are busy
-    p You are the {{chatStatus.waitPosition}} in the wait position
+    #wait(ng-if="chatStatus.status=='waiting'")
+      p All operators are busy
+      p You are the {{chatStatus.waitPosition}} in the wait position
 
-  #connected(ng-if="chatStatus.status=='connected'")
-    div#messages
-    input#message(type="text")
-    input#sendMessage(type="button", value="send")
+    #connected(ng-if="chatStatus.status=='connected'")
+      div#messages
+      input#message(type="text")
+      input#sendMessage(type="button", value="send")

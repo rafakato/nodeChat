@@ -15,8 +15,9 @@ html
         };
     block scripts
   body
-    div#loading(ng-show="!loaded")
-      div.overlay
-      div.spinner        
+    if appID
+      div#loading(ng-if="!loaded")
+        div.overlay
+        div.spinner
     block content
     block angular-templates
