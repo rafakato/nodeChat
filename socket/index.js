@@ -93,6 +93,7 @@ module.exports = function(port) {
                         room.open = true;
                         room.operator = null;
                         room.messages = [];
+                        room.startedAt = null;
                     });
                 }
                 this.connectedClients = _.filter(this.connectedClients, function(user) {
@@ -136,6 +137,7 @@ module.exports = function(port) {
                             operator: null,
                             operatorTyping: false,
                             open: true,
+                            startedAt: null,
                             messages: [],
                             _getSocketRoomId: function() {
                                 return this.appId + '|' + this.id;
@@ -159,6 +161,7 @@ module.exports = function(port) {
 
                             room.open = false;
                             room.operator = client.data;
+                            room.startedAt = moment();
                             chat. in (socketRoomId).emit('chatOpened', room);
                             var firstMessage = greetingMessage.replace('[user.name]', room.user.name).replace('[operator.name]', room.operator.name);
                             app.sendMessageToRoom(client, room.id, firstMessage);

@@ -2,13 +2,19 @@ module.exports = function() {
     var express = require('express'),
         app = express();
 
+    var nodePath = '/javascripts';
+    if (app.get('env') == 'production') {
+        nodePath += '/build';
+    }
+
     app.get('/', function(req, res) {
         if (!req.query.i) {
             res.redirect('/');
         }
 
         res.render('index', {
-            title: 'Chat'
+            title: 'Chat',
+            nodePath: nodePath
         });
     });
 
@@ -19,7 +25,8 @@ module.exports = function() {
 
         res.render('client', {
             title: 'Chat',
-            appID: req.query.i
+            appID: req.query.i,
+            nodePath: nodePath
         });
     });
 
@@ -30,7 +37,8 @@ module.exports = function() {
 
         res.render('operator', {
             title: 'Chat',
-            appID: req.query.i
+            appID: req.query.i,
+            nodePath: nodePath
         });
     });
 

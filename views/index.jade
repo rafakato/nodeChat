@@ -1,8 +1,7 @@
 extends layout
 
 block scripts
-    script(type="text/javascript", src="/javascripts/socket.io/socket.io.js")
-    script(type="text/javascript", src="/javascripts/chat/index.js")
+    script(type="text/javascript", src="/javascripts/require.js", data-main="#{nodePath}/index")
 
 block content
   div(ng-controller="index")

@@ -1,9 +1,7 @@
 extends layout
 
 block scripts
-    script(type="text/javascript", src="/javascripts/socket.io/socket.io.js")
-    script(type="text/javascript", src="/javascripts/underscore/underscore.js")
-    script(type="text/javascript", src="/javascripts/chat/operator.js")
+    script(type="text/javascript", src="/javascripts/require.js", data-main="#{nodePath}/operator.js")
 
 block content
   div(ng-controller="operator")
