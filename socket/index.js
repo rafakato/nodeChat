@@ -1,5 +1,5 @@
-module.exports = function(port) {
-    var io = require('socket.io').listen(port || 3010),
+module.exports = function(app) {
+    var io = require('socket.io').listen(app.get('socket-port')),
         _ = require('underscore'),
         moment = require('moment');
 
@@ -203,4 +203,4 @@ module.exports = function(port) {
             }
         };
     }
-}();
+};

@@ -2,6 +2,9 @@ module.exports = function(grunt) {
     grunt.initConfig({
         pkg: grunt.file.readJSON("package.json"),
         bowercopy: {
+            options: {
+                runBower: true
+            },
             angular: {
                 options: {
                     destPrefix: "public/javascripts/lib/angular"
@@ -69,13 +72,47 @@ module.exports = function(grunt) {
                     }]
                 }
             }
+        },
+        express: {
+            options: {
+                port: 3000,
+                args: ["--socket_port=3010"],
+                node_env: 'development'
+            },
+            dev: {
+                options: {
+                    script: './app.js'
+                }
+            },
+            prod: {
+                options: {
+                    script: './app.js',
+                    node_env: 'production'
+                    //port: 80
+                }
+            }
+        },
+        watch: {
+            express: {
+                files: ['./app.js', './routes/*.js', './socket/*.js'],
+                tasks: ['express:dev'],
+                options: {
+                    spawn: false
+                }
+            }
         }
     });
 
     grunt.loadNpmTasks("grunt-bowercopy");
     grunt.loadNpmTasks("grunt-contrib-requirejs");
+    grunt.loadNpmTasks('grunt-express-server');
+    grunt.loadNpmTasks('grunt-contrib-watch');
 
     grunt.registerTask("default", ["bowercopy"]);
+
+    var target = grunt.option('target') || 'dev';
+
+    grunt.registerTask("server", ["express:" + target, "watch"]);
 
     grunt.registerTask("r.js", ["requirejs"]);
 };

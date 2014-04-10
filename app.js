@@ -3,11 +3,14 @@ var express = require('express'),
     path = require('path'),
     logger = require('morgan'),
     bodyParser = require('body-parser'),
-    debug = require('debug')('my-application');
+    debug = require('debug')('my-application'),
+    parseArgs = require('minimist');
 
 var routes = require('./routes');
 
 var app = express();
+
+var argv = parseArgs(process.argv.splice(2));
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -56,9 +59,10 @@ app.use(function(err, req, res, next) {
     });
 });
 
-require('./socket');
-
 app.set('port', process.env.PORT || 3000);
+app.set('socket-port', argv.socket_port || 3010);
+
+var socketConfig = require('./socket')(app);
 
 var server = app.listen(app.get('port'), function() {
     debug('Express server listening on port ' + server.address().port);
