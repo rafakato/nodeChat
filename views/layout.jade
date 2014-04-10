@@ -4,8 +4,10 @@ html
     meta(charset="utf8")
     meta(name="viewport", content="width=device-width, initial-scale=1, user-scalable=no")
     title=title
-    link(rel="stylesheet", href="/stylesheets/lib/angular/angular-csp.css")
-    link(rel="stylesheet", href="/stylesheets/style.css")
+    if env == 'production'
+      link(rel="stylesheet", href="/stylesheets/main.min.css")
+    else
+      link(rel="stylesheet", href="/stylesheets/main.css")
     script(type="text/javascript").
         var configs = {
             appID: '#{appID}',
@@ -13,5 +15,9 @@ html
         };
     block scripts
   body
+    div#loading(ng-if="!loaded")
+      div.overlay
+      div.spinner
+        
     block content
     block angular-templates

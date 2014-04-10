@@ -1,8 +1,6 @@
-require(['angular', 'socket.io', 'underscore'],
-    function(angular, io, _) {
+require(['angular', 'socket.io', 'underscore', 'app/main'],
+    function(angular, io, _, module) {
         "use strict";
-
-        var module = angular.module('chat', []);
 
         module.controller('operator', ['$scope',
             function($scope) {

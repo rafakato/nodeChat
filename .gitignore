@@ -31,3 +31,6 @@ bower_components
 public/**/build
 
 public/**/lib
+
+.sass-cache
+public/stylesheets/*.css

@@ -1,7 +1,7 @@
 extends layout
 
 block scripts
-    script(type="text/javascript", src="/javascripts/require.js", data-main="#{requirePath}/index")
+    script(type="text/javascript", src="/javascripts/require.js", data-main="/javascripts#{buildPath}index")
 
 block content
   h1= title

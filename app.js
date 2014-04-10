@@ -25,9 +25,10 @@ app.configure(function() {
     app.use(function(req, res, next) {
         res.locals({
             title: "SChat",
-            requirePath: '/javascripts' + (app.get('env') == 'production' ? '/build' : ''),
+            buildPath: app.get('env') == 'production' ? '/build/' : '/',
             socketUrl: req.protocol + '://' + req.host + (app.get('socket-port') == 80 || app.get('socket-port') == 443 ? '' : ':' + app.get('socket-port')) + '/',
-            appID: req.query.i
+            appID: req.query.i,
+            env: app.get('env')
         });
         next();
     });

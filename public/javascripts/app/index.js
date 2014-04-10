@@ -1,8 +1,6 @@
-require(['angular', 'socket.io'],
-    function(angular, io) {
+require(['angular', 'socket.io', 'app/main'],
+    function(angular, io, module) {
         "use strict";
-
-        var module = angular.module('chat', []);
 
         module.controller('index', ['$scope', '$location',
             function($scope, $location) {

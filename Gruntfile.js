@@ -100,6 +100,24 @@ module.exports = function(grunt) {
                 }
             }
         },
+        sass: {
+            dist: {
+                options: {
+                    style: 'expanded'
+                },
+                files: {
+                    './public/stylesheets/main.css': './public/stylesheets/pages/main.scss'
+                }
+            },
+            dist_min: {
+                options: {
+                    style: 'compressed'
+                },
+                files: {
+                    './public/stylesheets/main.min.css': './public/stylesheets/pages/main.scss'
+                }
+            }
+        },
         watch: {
             express: {
                 files: ['./app.js', './routes/*.js', './socket/*.js'],
@@ -107,20 +125,28 @@ module.exports = function(grunt) {
                 options: {
                     spawn: false
                 }
+            },
+            sass: {
+                files: ['./public/stylesheets/pages/**/*.scss'],
+                tasks: ['sass'],
+                options: {
+                    spawn: false
+                }
             }
         }
     });
+
+    var target = grunt.option('target') || 'dev';
 
     grunt.loadNpmTasks("grunt-bowercopy");
     grunt.loadNpmTasks("grunt-contrib-requirejs");
     grunt.loadNpmTasks('grunt-express-server');
     grunt.loadNpmTasks('grunt-contrib-watch');
+    grunt.loadNpmTasks('grunt-contrib-sass');
 
     grunt.registerTask("default", ["bowercopy"]);
 
-    var target = grunt.option('target') || 'dev';
-
-    grunt.registerTask("server", ["express:" + target, "watch"]);
+    grunt.registerTask("server", ["express:" + target, "sass", "watch"]);
 
     grunt.registerTask("r.js", ["requirejs"]);
 };
