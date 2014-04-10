@@ -10,16 +10,8 @@ a
 div#loading
     z-index: 10000
     div.overlay
-        opacity: 0.5
-        background: #FFF
-        width: 100%
-        height: 100%
-        z-index: 0
-        top: 0
-        left: 0
-        position: fixed
+        @include overlay
     div.spinner
         background-image: url("../images/ajax-loader.gif")
         @include center(24px, 24px)
         z-index: 1
-

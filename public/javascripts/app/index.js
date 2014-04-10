@@ -2,14 +2,18 @@ require(['angular', 'socket.io', 'app/main'],
     function(angular, io, module) {
         "use strict";
 
-        module.controller('index', ['$scope', '$location',
-            function($scope, $location) {
+        module.controller('index', ['$scope', '$timeout',
+            function($scope, $timeout) {
+                $scope.chatStatus = 'connecting';
                 var chat = io.connect(configs.socketUrl, {
                     query: 'appId=' + configs.appID
                 });
 
                 chat.on('connect', function() {
-
+                    $scope.chatStatus = 'connected';
+            $timeout(function() {
+                $scope.chatStatus = '';
+            }, 500);
                 });
 
                 chat.on('updateStatus', function(data) {
@@ -18,13 +22,6 @@ require(['angular', 'socket.io', 'app/main'],
                 });
             }
         ]);
-
-        function getParameterByName(name) {
-            name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
-            var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
-                results = regex.exec(location.search);
-            return results == null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
-        }
 
         angular.element(document).ready(function() {
             angular.bootstrap(document, ['chat']);

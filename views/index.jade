@@ -6,6 +6,9 @@ block scripts
 block content
   h1= title
   div(ng-controller="index", ng-cloak)
+      div#chatStatus(ng-if="chatStatus", ng-cloak)
+        p {{chatStatus}}
+        
       p Total Rooms: {{status.totalRooms}}
       p Open Rooms: {{status.openRooms}}
       p Users Waiting: {{status.usersWaiting}}
