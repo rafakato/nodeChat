@@ -20,7 +20,7 @@ require(['angular', 'socket.io', 'underscore'],
                 $scope.chatWindows = [];
 
                 $scope.connect = function() {
-                    $scope.chat = io.connect('http://localhost:3010/', {
+                    $scope.chat = io.connect(configs.socketUrl, {
                         query: 'appId=' + configs.appID + '&userType=operator'
                     });
 

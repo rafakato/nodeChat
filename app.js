@@ -26,10 +26,9 @@ app.configure(function() {
         res.locals({
             title: "SChat",
             requirePath: '/javascripts' + (app.get('env') == 'production' ? '/build' : ''),
-            socketPort: app.get('socket-port'),
+            socketUrl: req.protocol + '://' + req.host + (app.get('socket-port') == 80 || app.get('socket-port') == 443 ? '' : ':' + app.get('socket-port')) + '/',
             appID: req.query.i
         });
-        console.log(res.locals);
         next();
     });
 

@@ -6,7 +6,7 @@ require(['angular', 'socket.io'],
 
         module.controller('index', ['$scope', '$location',
             function($scope, $location) {
-                var chat = io.connect('http://localhost:3010/', {
+                var chat = io.connect(configs.socketUrl, {
                     query: 'appId=' + configs.appID
                 });
 
