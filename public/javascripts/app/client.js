@@ -2,8 +2,8 @@ require(['angular', 'socket.io', 'app/main', 'app/roomFactory'],
     function(angular, io, module, roomFactory) {
         "use strict";
 
-        module.controller('client', ['$scope', '$timeout',
-            function($scope, $timeout) {
+        module.controller('client', ['$scope', '$timeout', 'gettext',
+            function($scope, $timeout, gettext) {
                 $scope.clientData = {
                     name: '',
                     email: ''
@@ -18,10 +18,10 @@ require(['angular', 'socket.io', 'app/main', 'app/roomFactory'],
                     $scope.chat = io.connect(configs.socketUrl, {
                         query: 'appId=' + configs.appID + '&userType=user'
                     });
-                    $scope.connectionStatus = 'connecting';
+                    $scope.connectionStatus = gettext('connecting');
 
                     $scope.chat.on('connect', function() {
-                        $scope.connectionStatus = 'connected';
+                        $scope.connectionStatus = gettext('connected');
                         $timeout(function() {
                             $scope.connectionStatus = '';
                         }, 500);

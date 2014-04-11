@@ -3,7 +3,6 @@
   "version": "0.0.1",
   "private": true,
   "scripts": {
-    "preinstall": "npm install -g bower grunt-cli",
     "start": "grunt server",
     "postinstall": "grunt default"
   },
@@ -17,7 +16,8 @@
     "socket.io": "~0.9.16",
     "moment": "^2.5.1",
     "socket.io-client": "^0.9.16",
-    "minimist": "0.0.8"
+    "minimist": "0.0.8",
+    "webmaker-i18n": "^0.3.16"
   },
   "devDependencies": {
     "grunt-cli": "~0.1.13",
@@ -27,6 +27,9 @@
     "grunt-contrib-requirejs": "~0.4.3",
     "grunt-express-server": "^0.4.13",
     "grunt-contrib-watch": "^0.6.1",
-    "grunt-contrib-sass": "^0.7.3"
+    "grunt-contrib-sass": "^0.7.3",
+    "grunt-contrib-jade": "^0.11.0",
+    "grunt-angular-gettext": "^0.2.12",
+    "angular-gettext-tools": "git+https://github.com/rafakato/angular-gettext-tools.git"
   }
 }

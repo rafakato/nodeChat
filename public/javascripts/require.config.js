@@ -4,6 +4,7 @@ require.config({
         'angular': 'lib/angular/angular',
         'angular-local-storage': 'lib/angular/plugins/angular-local-storage',
         'angular-sanitize': 'lib/angular/plugins/angular-sanitize',
+        'angular-gettext': 'lib/angular/plugins/angular-gettext',
         'moment': 'lib/momentjs/moment',
         'socket.io': 'lib/socket.io/socket.io',
         'underscore': 'lib/underscore/underscore'
@@ -16,6 +17,9 @@ require.config({
             'deps': ['angular']
         },
         'angular-sanitize': {
+            'deps': ['angular']
+        },
+        'angular-gettext': {
             'deps': ['angular']
         },
         'moment': {

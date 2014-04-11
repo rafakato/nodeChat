@@ -2,8 +2,8 @@ require(['angular', 'socket.io', 'underscore', 'app/main', 'app/roomFactory'],
     function(angular, io, _, module, roomFactory) {
         "use strict";
 
-        module.controller('operator', ['$scope', '$timeout', 'localStorageService',
-            function($scope, $timeout, localStorageService) {
+        module.controller('operator', ['$scope', '$timeout', 'localStorageService', 'gettext',
+            function($scope, $timeout, localStorageService, gettext) {
                 var init = function() {
                     $scope.clientData = {
                         name: '',
@@ -24,10 +24,10 @@ require(['angular', 'socket.io', 'underscore', 'app/main', 'app/roomFactory'],
                     $scope.chat = io.connect(configs.socketUrl, {
                         query: 'appId=' + configs.appID + '&userType=operator'
                     });
-                    $scope.connectionStatus = 'connecting';
+                    $scope.connectionStatus = gettext('connecting');
 
                     $scope.chat.on('connect', function() {
-                        $scope.connectionStatus = 'connected';
+                        $scope.connectionStatus = gettext('connected');
                         $timeout(function() {
                             $scope.connectionStatus = '';
                         }, 500);

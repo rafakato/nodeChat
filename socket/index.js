@@ -122,7 +122,6 @@ module.exports = function(app) {
                     text: message,
                     user: client.data
                 };
-                console.log(message);
                 room.messages.push(message);
                 io.sockets. in (room._getSocketRoomId()).emit('messageReceived', {
                     toRoom: roomId,

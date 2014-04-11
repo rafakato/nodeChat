@@ -37,12 +37,6 @@ app.configure(function() {
     app.use('/', require('./routes'));
 });
 
-/// catch 404 and forwarding to error handler
-app.use(function(req, res, next) {
-    var err = new Error('Not Found');
-    err.status = 404;
-    next(err);
-});
 
 /// error handlers
 
@@ -54,6 +48,13 @@ if (app.get('env') === 'development') {
             message: err.message,
             error: err
         });
+    });
+} else {
+    /// catch 404 and forwarding to error handler
+    app.use(function(req, res, next) {
+        var err = new Error('Not Found');
+        err.status = 404;
+        next(err);
     });
 }
 

@@ -5,15 +5,15 @@ block content
   div(ng-controller="index", ng-cloak)
     include partials/connectionStatus.jade
 
-    p Total Rooms: {{status.totalRooms}}
-    p Open Rooms: {{status.openRooms}}
-    p Users Waiting: {{status.usersWaiting}}
+    p(translate) Total Rooms: {{status.totalRooms}}
+    p(translate) Open Rooms: {{status.openRooms}}
+    p(translate) Users Waiting: {{status.usersWaiting}}
     div
-      p Users Connected to this App: 
+      p(translate) Users Connected to this App: 
       ul
         li(ng-repeat="user in status.usersConnected.users")
           | {{user.name}} - ({{user.email}})
     p
-      a(href="/chat/client?i=123") open client
+      a(href="/chat/client?i=123", translate) open client
     p
-      a(href="/chat/operator?i=123") open operator
+      a(href="/chat/operator?i=123", translate) open operator

@@ -1,4 +1,4 @@
-require(['angular', 'socket.io', 'app/main'],
+require(['angular', 'socket.io', 'app/main', 'app/translation/translations'],
     function(angular, io, module) {
         "use strict";
 

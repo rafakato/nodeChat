@@ -34,3 +34,6 @@ public/**/lib
 
 .sass-cache
 public/stylesheets/*.css
+
+translation
+views_html

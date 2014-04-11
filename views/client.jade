@@ -5,15 +5,15 @@ block content
   div(ng-controller="client", ng-cloak)
     include partials/connectionStatus.jade
     div#connect(ng-if="chatStatus.status=='idle'")
-      input(type="text", ng-model="clientData.name", placeholder="Enter your name")
+      input(type="text", ng-model="clientData.name", placeholder="{{'Enter your name'|translate}}")
       br
-      input(type="email", ng-model="clientData.email", placeholder="Enter your eamil")
+      input(type="email", ng-model="clientData.email", placeholder="{{'Enter your email'|translate}}")
       br
-      input(type="button", value="access", ng-click="connect()")
+      input(type="button", value="{{'access'|translate}}", ng-click="connect()")
 
     div#wait(ng-if="chatStatus.status=='waiting'")
-      p All operators are busy
-      p You are the {{chatStatus.waitPosition}} in the wait position
+      p(translate) All operators are busy
+      p(translate) You are the {{chatStatus.waitPosition}} in the wait position
 
     div#connected(ng-if="chatStatus.status=='connected'")
       div(ng-if="chatWindow", ng-include, src="chatWindow.src")

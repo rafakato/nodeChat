@@ -23,6 +23,7 @@
     "requirejs": "~2.1.11",
     "socket.io-client": "~0.9.16",
     "angular-local-storage": "~0.0.1",
-    "angular-sanitize": "~1.2.16"
+    "angular-sanitize": "~1.2.16",
+    "angular-gettext": "~0.2.8"
   }
 }

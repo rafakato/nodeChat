@@ -19,7 +19,8 @@ module.exports = function(grunt) {
                 },
                 files: {
                     "angular-local-storage.js": "angular-local-storage/angular-local-storage.js",
-                    "angular-sanitize.js": "angular-sanitize/angular-sanitize.js"
+                    "angular-sanitize.js": "angular-sanitize/angular-sanitize.js",
+                    "angular-gettext.js": "angular-gettext/dist/angular-gettext.js"
                 },
             },
             angularcss: {
@@ -148,6 +149,40 @@ module.exports = function(grunt) {
                     spawn: false
                 }
             }
+        },
+        nggettext_extract: {
+            pot: {
+                files: {
+                    'public/javascripts/app/translation/po/template.pot': ['./views_html/*.html', './public/javascripts/app/**/*.js']
+                }
+            },
+        },
+        nggettext_compile: {
+            all: {
+                options: {
+                    module: 'chat',
+                    requirejs: true,
+                    modulePath: 'app/module'
+                },
+                files: {
+                    'public/javascripts/app/translation/translations.js': ['public/javascripts/app/translation/po/*.po']
+                }
+            },
+        },
+        jade: {
+            compile: {
+                options: {
+                    client: false,
+                    pretty: true
+                },
+                files: [{
+                    cwd: "views",
+                    src: "**/*.jade",
+                    dest: "views_html",
+                    expand: true,
+                    ext: ".html"
+                }]
+            }
         }
     });
 
@@ -158,10 +193,14 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-express-server');
     grunt.loadNpmTasks('grunt-contrib-watch');
     grunt.loadNpmTasks('grunt-contrib-sass');
+    grunt.loadNpmTasks('grunt-angular-gettext');
+    grunt.loadNpmTasks('grunt-contrib-jade');
 
     grunt.registerTask("default", ["bowercopy"]);
 
     grunt.registerTask("server", ["express:" + target, "sass", "watch"]);
+
+    grunt.registerTask("extract_translations", ["jade", "nggettext_extract"]);
 
     grunt.registerTask("r.js", ["requirejs"]);
 };
