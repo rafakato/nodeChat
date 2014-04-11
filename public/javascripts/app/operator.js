@@ -43,6 +43,7 @@ require(['angular', 'socket.io', 'underscore', 'app/main'],
                     });
 
                     $scope.chat.on('chatOpened', function(room) {
+                        console.log(room);
                         $scope.chatWindows.push({
                             room: room,
                             src: '/operator/chatWindow.html',

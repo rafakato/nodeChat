@@ -37,6 +37,27 @@ require(['angular', 'socket.io', 'app/main'],
                     $scope.chat.on('updateStatus', function() {
                         $scope.chat.emit('getWaitingPosition');
                     });
+
+                    $scope.chat.on('chatOpened', function(room) {
+                        $scope.chatStatus.status = 'connected';
+                        $scope.chatWindow = {
+                            room: room,
+                            src: '/client/chatWindow.html',
+                            typingMessage: '',
+                            sendMessage: function() {
+
+                            },
+                            closeChat: function() {
+
+                            }
+                        };
+                        $scope.$apply();
+                    });
+
+                    $scope.chat.on('messageReceived', function(data) {
+                        $scope.chatWindow.room.messages.push(data.message);
+                        $scope.$apply();
+                    });
                 }
             }
         ]);

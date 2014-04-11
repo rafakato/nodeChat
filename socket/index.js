@@ -123,7 +123,7 @@ module.exports = function(app) {
                     user: client.data
                 };
                 room.messages.push(message);
-                chat. in (room._getSocketRoomId()).emit('messageReceived', {
+                io.sockets.in(room._getSocketRoomId()).emit('messageReceived', {
                     toRoom: roomId,
                     message: message
                 });
@@ -146,7 +146,6 @@ module.exports = function(app) {
                                 return this.appId + '|' + this.id;
                             },
                         };
-
                         client.join(room._getSocketRoomId());
                         app.rooms.push(room);
                         app.addUserToWaiting(client);
@@ -165,7 +164,7 @@ module.exports = function(app) {
                             room.open = false;
                             room.operator = client.data;
                             room.startedAt = moment();
-                            chat. in (socketRoomId).emit('chatOpened', room);
+                            io.sockets. in (socketRoomId).emit('chatOpened', room);
                             var firstMessage = greetingMessage.replace('[user.name]', room.user.name).replace('[operator.name]', room.operator.name);
                             app.sendMessageToRoom(client, room.id, firstMessage);
                         } else {
