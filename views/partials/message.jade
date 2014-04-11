@@ -1,0 +1,5 @@
+span.username {{message.user.name}} says:
+br
+span(ng-bind-html="message.text")
+br
+span.timestamp(time="{{message.timestamp}}")

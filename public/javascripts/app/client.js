@@ -1,5 +1,5 @@
-require(['angular', 'socket.io', 'app/main'],
-    function(angular, io, module) {
+require(['angular', 'socket.io', 'app/main', 'app/roomFactory'],
+    function(angular, io, module, roomFactory) {
         "use strict";
 
         module.controller('client', ['$scope', '$timeout',
@@ -40,17 +40,7 @@ require(['angular', 'socket.io', 'app/main'],
 
                     $scope.chat.on('chatOpened', function(room) {
                         $scope.chatStatus.status = 'connected';
-                        $scope.chatWindow = {
-                            room: room,
-                            src: '/client/chatWindow.html',
-                            typingMessage: '',
-                            sendMessage: function() {
-
-                            },
-                            closeChat: function() {
-
-                            }
-                        };
+                        $scope.chatWindow = new roomFactory($scope, room, '/client/chatWindow.html');
                         $scope.$apply();
                     });
 
@@ -59,18 +49,14 @@ require(['angular', 'socket.io', 'app/main'],
                         $scope.$apply();
                     });
                 }
+
+                $scope.timeout = function(fn, duration) {
+                    $timeout.apply($timeout, args);
+                }
             }
         ]);
-
-        function getParameterByName(name) {
-            name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
-            var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
-                results = regex.exec(location.search);
-            return results == null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
-        }
 
         angular.element(document).ready(function() {
             angular.bootstrap(document, ['chat']);
         });
-    }
-);
+    });

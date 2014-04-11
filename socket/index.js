@@ -44,7 +44,7 @@ module.exports = function(app) {
                 client.app.updateStatusToAppListeners();
             });
             client.on('sendMessage', function(roomId, message) {
-                setClientData(client, roomId, message);
+                client.app.sendMessageToRoom(client, roomId, message);
             });
 
             client.on('disconnect', function() {
@@ -122,8 +122,9 @@ module.exports = function(app) {
                     text: message,
                     user: client.data
                 };
+                console.log(message);
                 room.messages.push(message);
-                io.sockets.in(room._getSocketRoomId()).emit('messageReceived', {
+                io.sockets. in (room._getSocketRoomId()).emit('messageReceived', {
                     toRoom: roomId,
                     message: message
                 });

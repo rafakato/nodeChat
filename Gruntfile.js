@@ -18,7 +18,8 @@ module.exports = function(grunt) {
                     destPrefix: "public/javascripts/lib/angular/plugins"
                 },
                 files: {
-                    "angular-local-storage.js": "angular-local-storage/angular-local-storage.js"
+                    "angular-local-storage.js": "angular-local-storage/angular-local-storage.js",
+                    "angular-sanitize.js": "angular-sanitize/angular-sanitize.js"
                 },
             },
             angularcss: {

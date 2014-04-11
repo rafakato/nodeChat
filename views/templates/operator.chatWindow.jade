@@ -1,8 +1,8 @@
 script(type="text/ng-template", id="/operator/chatWindow.html")
   div.chat
     div.messages
-      p(ng-repeat="message in window.room.messages")
-        | {{message | json}}
+      div(ng-repeat="message in window.room.messages")
+        include ../partials/message.jade
     div.typeArea
       input(type="text", ng-model="window.typingMessage")
       input(type="button", ng-click="window.sendMessage()", value="send message")

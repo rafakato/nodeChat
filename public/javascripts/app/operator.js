@@ -1,5 +1,5 @@
-require(['angular', 'socket.io', 'underscore', 'app/main'],
-    function(angular, io, _, module) {
+require(['angular', 'socket.io', 'underscore', 'app/main', 'app/roomFactory'],
+    function(angular, io, _, module, roomFactory) {
         "use strict";
 
         module.controller('operator', ['$scope', '$timeout', 'localStorageService',
@@ -43,18 +43,7 @@ require(['angular', 'socket.io', 'underscore', 'app/main'],
                     });
 
                     $scope.chat.on('chatOpened', function(room) {
-                        console.log(room);
-                        $scope.chatWindows.push({
-                            room: room,
-                            src: '/operator/chatWindow.html',
-                            typingMessage: '',
-                            sendMessage: function() {
-
-                            },
-                            closeChat: function() {
-
-                            }
-                        });
+                        $scope.chatWindows.push(new roomFactory($scope, room, '/operator/chatWindow.html'));
                         $scope.$apply();
                     });
 
@@ -62,6 +51,7 @@ require(['angular', 'socket.io', 'underscore', 'app/main'],
                         var chatWindow = _.find($scope.chatWindows, function(chatWindow) {
                             return chatWindow.room.id === data.toRoom;
                         });
+
                         chatWindow.room.messages.push(data.message);
                         $scope.$apply();
                     });

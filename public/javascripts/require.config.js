@@ -3,6 +3,7 @@ require.config({
     paths: {
         'angular': 'lib/angular/angular',
         'angular-local-storage': 'lib/angular/plugins/angular-local-storage',
+        'angular-sanitize': 'lib/angular/plugins/angular-sanitize',
         'moment': 'lib/momentjs/moment',
         'socket.io': 'lib/socket.io/socket.io',
         'underscore': 'lib/underscore/underscore'
@@ -12,6 +13,9 @@ require.config({
             'exports': 'angular'
         },
         'angular-local-storage': {
+            'deps': ['angular']
+        },
+        'angular-sanitize': {
             'deps': ['angular']
         },
         'moment': {
