@@ -85,6 +85,9 @@ module.exports = function(app) {
             connectedClients: [],
             disconnectClient: function(client) {
                 if (client.type === 'user') {
+                    this.rooms = _.filter(this.rooms, function(room) {
+                        return room.user.id != client.id;
+                    });
                     this.usersWaiting = _.without(this.usersWaiting, client.id);
                 } else if (client.type === 'operator') {
                     _.each(_.filter(this.rooms, function(room) {
