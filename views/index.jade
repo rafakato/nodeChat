@@ -3,18 +3,18 @@ extends layout
 block content
   h1= title
   div(ng-controller="index", ng-cloak)
-      div#chatStatus(ng-if="chatStatus", ng-cloak)
-        p {{chatStatus}}
+    div#connectionStatus(ng-if="connectionStatus", ng-cloak)
+      p {{connectionStatus}}
 
-      p Total Rooms: {{status.totalRooms}}
-      p Open Rooms: {{status.openRooms}}
-      p Users Waiting: {{status.usersWaiting}}
-      div
-        p Users Connected to this App: 
-        ul
-          li(ng-repeat="user in status.usersConnected.users")
-            | {{user.name}} - ({{user.email}})
-      p
-        a(href="/chat/client?i=123") open client
-      p
-        a(href="/chat/operator?i=123") open operator
+    p Total Rooms: {{status.totalRooms}}
+    p Open Rooms: {{status.openRooms}}
+    p Users Waiting: {{status.usersWaiting}}
+    div
+      p Users Connected to this App: 
+      ul
+        li(ng-repeat="user in status.usersConnected.users")
+          | {{user.name}} - ({{user.email}})
+    p
+      a(href="/chat/client?i=123") open client
+    p
+      a(href="/chat/operator?i=123") open operator

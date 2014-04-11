@@ -18,7 +18,7 @@ module.exports = function(grunt) {
                     destPrefix: "public/stylesheets/lib/angular"
                 },
                 files: {
-                    "angular-csp.css": "angular/angular-csp.css"
+                    "angular-csp.scss": "angular/angular-csp.css"
                 },
             },
             momentjs: {

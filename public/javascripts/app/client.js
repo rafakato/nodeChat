@@ -2,8 +2,8 @@ require(['angular', 'socket.io', 'app/main'],
     function(angular, io, module) {
         "use strict";
 
-        module.controller('client', ['$scope',
-            function($scope) {
+        module.controller('client', ['$scope', '$timeout',
+            function($scope, $timeout) {
                 $scope.clientData = {
                     name: '',
                     email: ''
@@ -18,8 +18,13 @@ require(['angular', 'socket.io', 'app/main'],
                     $scope.chat = io.connect(configs.socketUrl, {
                         query: 'appId=' + configs.appID + '&userType=user'
                     });
+                    $scope.connectionStatus = 'connecting';
 
                     $scope.chat.on('connect', function() {
+                        $scope.connectionStatus = 'connected';
+                        $timeout(function() {
+                            $scope.connectionStatus = '';
+                        }, 500);
                         $scope.chat.emit('openChat', $scope.clientData);
                     });
 

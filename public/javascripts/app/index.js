@@ -4,16 +4,16 @@ require(['angular', 'socket.io', 'app/main'],
 
         module.controller('index', ['$scope', '$timeout',
             function($scope, $timeout) {
-                $scope.chatStatus = 'connecting';
+                $scope.connectionStatus = 'connecting';
                 var chat = io.connect(configs.socketUrl, {
                     query: 'appId=' + configs.appID
                 });
 
                 chat.on('connect', function() {
-                    $scope.chatStatus = 'connected';
-            $timeout(function() {
-                $scope.chatStatus = '';
-            }, 500);
+                    $scope.connectionStatus = 'connected';
+                    $timeout(function() {
+                        $scope.connectionStatus = '';
+                    }, 500);
                 });
 
                 chat.on('updateStatus', function(data) {

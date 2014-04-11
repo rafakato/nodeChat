@@ -5,13 +5,13 @@ body
     font: 14px "Lucida Grande", Helvetica, Arial, sans-serif
 
 a
-    color: #00B7FF
+    color: #00b7ff
 
 div#loading
     z-index: 10000
     div.overlay
-        @include overlay
+        +overlay
     div.spinner
         background-image: url("../images/ajax-loader.gif")
-        @include center(24px, 24px)
+        +center(24px, 24px)
         z-index: 1
