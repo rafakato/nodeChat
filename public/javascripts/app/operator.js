@@ -2,20 +2,23 @@ require(['angular', 'socket.io', 'underscore', 'app/main'],
     function(angular, io, _, module) {
         "use strict";
 
-        module.controller('operator', ['$scope', '$timeout',
-            function($scope, $timeout) {
-                $scope.clientData = {
-                    name: '',
-                    email: ''
-                };
-                $scope.rooms = [];
+        module.controller('operator', ['$scope', '$timeout', 'localStorageService',
+            function($scope, $timeout, localStorageService) {
+                var init = function() {
+                    $scope.clientData = {
+                        name: '',
+                        email: ''
+                    };
+                    $scope.rooms = [];
 
-                $scope.chat = null;
-                $scope.chatStatus = {
-                    status: 'idle'
-                };
+                    $scope.chat = null;
+                    $scope.chatStatus = {
+                        status: 'idle'
+                    };
 
-                $scope.chatWindows = [];
+                    $scope.chatWindows = [];
+                }
+                init();
 
                 $scope.connect = function() {
                     $scope.chat = io.connect(configs.socketUrl, {
@@ -29,6 +32,7 @@ require(['angular', 'socket.io', 'underscore', 'app/main'],
                             $scope.connectionStatus = '';
                         }, 500);
 
+                        localStorageService.add('loggedUser', $scope.clientData);
                         $scope.chat.emit('setData', $scope.clientData);
                         $scope.chatStatus.status = 'connected';
                     });
@@ -65,15 +69,18 @@ require(['angular', 'socket.io', 'underscore', 'app/main'],
                 $scope.openChat = function(userId) {
                     $scope.chat.emit('openChat', userId);
                 }
+
+                $scope.exit = function() {
+                    localStorageService.remove('loggedUser');
+                    init();
+                }
+
+                if (localStorageService.get('loggedUser')) {
+                    angular.extend($scope.clientData, localStorageService.get('loggedUser'))
+                    $scope.connect();
+                }
             }
         ]);
-
-        function getParameterByName(name) {
-            name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
-            var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
-                results = regex.exec(location.search);
-            return results == null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
-        }
 
         angular.element(document).ready(function() {
             angular.bootstrap(document, ['chat']);

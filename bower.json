@@ -1,26 +1,27 @@
 {
-    "name": "SChat",
-    "version": "0.0.1",
-    "homepage": "https://github.com/rafakato/nodeChat",
-    "authors": [
-        "Rafael Kato <rafa_kato@hotmail.com>"
-    ],
-    "main": "app.js",
-    "license": "MIT",
-    "private": true,
-    "ignore": [
-        "**/.*",
-        "node_modules",
-        "bower_components",
-        "public/bower_components",
-        "test",
-        "tests"
-    ],
-    "dependencies": {
-        "momentjs": "~2.5.1",
-        "angular": "~1.2.16",
-        "underscore": "~1.6.0",
-        "requirejs": "~2.1.11",
-        "socket.io-client": "~0.9.16"
-    }
+  "name": "SChat",
+  "version": "0.0.1",
+  "homepage": "https://github.com/rafakato/nodeChat",
+  "authors": [
+    "Rafael Kato <rafa_kato@hotmail.com>"
+  ],
+  "main": "app.js",
+  "license": "MIT",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "public/bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "momentjs": "~2.5.1",
+    "angular": "~1.2.16",
+    "underscore": "~1.6.0",
+    "requirejs": "~2.1.11",
+    "socket.io-client": "~0.9.16",
+    "angular-local-storage": "~0.0.1"
+  }
 }
