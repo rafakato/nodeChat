@@ -3,6 +3,8 @@ extends layout
 block content
   h1= title
   div(ng-controller="operator", ng-cloak)
+    include partials/connectionStatus.jade
+
     #connect(ng-if="chatStatus.status=='idle'")
       input(type="text", ng-model="clientData.name", placeholder="Enter your name")
       br
@@ -21,14 +23,4 @@ block content
         div.chatWindow(ng-repeat="window in chatWindows", ng-include, src="window.src")
 
 block angular-templates
-  script(type="text/ng-template", id="/operator/chatWindow.html")
-    div.chat
-      div.messages
-        p(ng-repeat="message in window.room.messages")
-          | {{message | json}}
-      div.typeArea
-        input(type="text", ng-model="window.typingMessage")
-        input(type="button", ng-click="window.sendMessage()", value="send message")
-    div.chat-tab
-      span {{window.room.user.name}}
-      a(href="javascript:void(0);", ng-click="window.closeChat()") x
+  include templates/chatWindow.jade

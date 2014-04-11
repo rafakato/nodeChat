@@ -3,9 +3,7 @@ extends layout
 block content
   h1= title
   div(ng-controller="client", ng-cloak)
-    div#connectionStatus(ng-if="connectionStatus", ng-cloak)
-      p {{connectionStatus}}
-        
+    include partials/connectionStatus.jade
     #connect(ng-if="chatStatus.status=='idle'")
       input(type="text", ng-model="clientData.name", placeholder="Enter your name")
       br
