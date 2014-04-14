@@ -1,4 +1,4 @@
-module.exports = function(app) {
+module.exports = function (app) {
     var io = require('socket.io').listen(app.get('socket-port')),
         _ = require('underscore'),
         moment = require('moment');
@@ -7,7 +7,7 @@ module.exports = function(app) {
 
     var greetingMessage = 'Hi [user.name], my name is [operator.name].<br />How can I help you?';
 
-    var chat = io.sockets.on('connection', function(client) {
+    var chat = io.sockets.on('connection', function (client) {
         var appId = client.handshake.query.appId;
 
         if (appId) {
@@ -20,34 +20,34 @@ module.exports = function(app) {
 
             //Client events
             if (client.type === 'user') {
-                client.on('openChat', function(data) {
+                client.on('openChat', function (data) {
                     setClientData(client, data);
                     client.app.openChatAs().user(client);
                 });
-                client.on('getWaitingPosition', function() {
+                client.on('getWaitingPosition', function () {
                     client.emit('setWaiting', client.app.getWaitingPosition(client.id));
                 });
             }
 
             //Operator events
             if (client.type === 'operator') {
-                client.on('openChat', function(userId) {
+                client.on('openChat', function (userId) {
                     client.app.openChatAs().operator(client, userId);
                 });
             }
 
             //Generic events
-            client.on('setData', function(data) {
+            client.on('setData', function (data) {
                 setClientData(client, data);
             });
-            client.on('getStatus', function(appId) {
+            client.on('getStatus', function (appId) {
                 client.app.updateStatusToAppListeners();
             });
-            client.on('sendMessage', function(roomId, message) {
+            client.on('sendMessage', function (roomId, message) {
                 client.app.sendMessageToRoom(client, roomId, message);
             });
 
-            client.on('disconnect', function() {
+            client.on('disconnect', function () {
                 client.app.disconnectClient(client);
             });
 
@@ -83,37 +83,37 @@ module.exports = function(app) {
         return {
             id: appId,
             connectedClients: [],
-            disconnectClient: function(client) {
+            disconnectClient: function (client) {
                 if (client.type === 'user') {
-                    this.rooms = _.filter(this.rooms, function(room) {
+                    this.rooms = _.filter(this.rooms, function (room) {
                         return room.user.id != client.id;
                     });
                     this.usersWaiting = _.without(this.usersWaiting, client.id);
                 } else if (client.type === 'operator') {
-                    _.each(_.filter(this.rooms, function(room) {
+                    _.each(_.filter(this.rooms, function (room) {
                         return room.operatorId != client.id;
-                    }), function(room) {
+                    }), function (room) {
                         room.open = true;
                         room.operator = null;
                         room.messages = [];
                         room.startedAt = null;
                     });
                 }
-                this.connectedClients = _.filter(this.connectedClients, function(user) {
+                this.connectedClients = _.filter(this.connectedClients, function (user) {
                     return user.id != client.id;
                 });
                 chat. in (this.id).emit('updateStatus', this.status());
             },
 
             rooms: [],
-            getRoom: function(params) {
-                return _.find(this.rooms, function(room) {
+            getRoom: function (params) {
+                return _.find(this.rooms, function (room) {
                     return (room.user.id == params.userId || params.userId === undefined) &&
                         (room.id == params.roomId || params.roomId === undefined) &&
                         (room.open == params.onlyOpen || params.onlyOpen === undefined);
                 });
             },
-            sendMessageToRoom: function(client, roomId, message) {
+            sendMessageToRoom: function (client, roomId, message) {
                 var room = this.getRoom({
                     roomId: roomId
                 });
@@ -128,10 +128,10 @@ module.exports = function(app) {
                     message: message
                 });
             },
-            openChatAs: function() {
+            openChatAs: function () {
                 var app = this;
                 return {
-                    user: function(client) {
+                    user: function (client) {
                         var room = {
                             id: guid(),
                             appId: app.id,
@@ -142,7 +142,7 @@ module.exports = function(app) {
                             open: true,
                             startedAt: null,
                             messages: [],
-                            _getSocketRoomId: function() {
+                            _getSocketRoomId: function () {
                                 return this.appId + '|' + this.id;
                             },
                         };
@@ -153,7 +153,7 @@ module.exports = function(app) {
                         app.connectedClients.push(client.data);
                         app.updateStatusToAppListeners();
                     },
-                    operator: function(client, userId) {
+                    operator: function (client, userId) {
                         var room = app.getRoom({
                             open: true
                         });
@@ -175,18 +175,18 @@ module.exports = function(app) {
             },
 
             usersWaiting: [],
-            addUserToWaiting: function(client) {
+            addUserToWaiting: function (client) {
                 this.usersWaiting.push(client.id);
                 client.emit('setWaiting', this.getWaitingPosition(client.id));
             },
-            getWaitingPosition: function(clientId) {
+            getWaitingPosition: function (clientId) {
                 return _.indexOf(this.usersWaiting, clientId) + 1;
             },
 
-            status: function() {
+            status: function () {
                 return {
                     totalRooms: this.rooms.length,
-                    openRooms: _.filter(this.rooms, function(room) {
+                    openRooms: _.filter(this.rooms, function (room) {
                         return room.open;
                     }).length,
                     usersWaiting: this.usersWaiting.length,
@@ -200,7 +200,7 @@ module.exports = function(app) {
                     }
                 };
             },
-            updateStatusToAppListeners: function() {
+            updateStatusToAppListeners: function () {
                 chat. in (this.id).emit('updateStatus', this.status());
             }
         };
