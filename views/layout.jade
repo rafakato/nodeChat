@@ -20,5 +20,11 @@ html
       div#loading(ng-if="!loaded")
         div.overlay
         div.spinner
-    block content
+    header
+      div=title
+    main
+      block content
+      #main-footer
+    footer
+      //span Copyright #{year}
     block angular-templates

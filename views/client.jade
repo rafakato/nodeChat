@@ -1,7 +1,6 @@
 extends layout
 
 block content
-  h1= title
   div(ng-controller="client", ng-cloak)
     include partials/connectionStatus.jade
     div#connect(ng-if="chatStatus.status=='idle'")

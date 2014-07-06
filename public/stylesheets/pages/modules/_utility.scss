@@ -4,8 +4,8 @@
     top: 50%;
     height: $height;
     width: $width;
-    margin-left: - $width / 2;
-    margin-top: - $height / 2;
+    margin-left: -$width / 2;
+    margin-top: -$height / 2;
 }
 
 @mixin center-top($width) {
@@ -13,10 +13,10 @@
     left: 50%;
     top: 0;
     width: $width;
-    margin-left: - $width / 2;
+    margin-left: -$width / 2;
 }
 
-@mixin overlay($color:#FFF, $opacity:0.5, $zindex:0) {
+@mixin overlay($color: white, $opacity: 0.5, $zindex: 0) {
     opacity: $opacity;
     background: $color;
     width: 100%;

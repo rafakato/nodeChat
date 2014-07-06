@@ -12,7 +12,7 @@ var app = express();
 
 var argv = parseArgs(process.argv.splice(2));
 
-app.configure(function() {
+app.configure(function () {
     app.set('views', path.join(__dirname, 'views'));
     app.set('view engine', 'jade');
 
@@ -22,9 +22,10 @@ app.configure(function() {
     app.use(express.methodOverride());
     app.use(app.router);
 
-    app.use(function(req, res, next) {
+    app.use(function (req, res, next) {
         res.locals({
             title: "SChat",
+            year: new Date().getFullYear(),
             buildPath: app.get('env') == 'production' ? '/build/' : '/',
             socketUrl: req.protocol + '://' + req.host + (app.get('socket-port') == 80 || app.get('socket-port') == 443 ? '' : ':' + app.get('socket-port')) + '/',
             appID: req.query.i,
@@ -43,7 +44,7 @@ app.configure(function() {
 // development error handler
 // will print stacktrace
 if (app.get('env') === 'development') {
-    app.use(function(err, req, res, next) {
+    app.use(function (err, req, res, next) {
         res.render('error', {
             message: err.message,
             error: err
@@ -51,7 +52,7 @@ if (app.get('env') === 'development') {
     });
 } else {
     /// catch 404 and forwarding to error handler
-    app.use(function(req, res, next) {
+    app.use(function (req, res, next) {
         var err = new Error('Not Found');
         err.status = 404;
         next(err);
@@ -60,7 +61,7 @@ if (app.get('env') === 'development') {
 
 // production error handler
 // no stacktraces leaked to user
-app.use(function(err, req, res, next) {
+app.use(function (err, req, res, next) {
     res.render('error', {
         message: err.message,
         error: {}
@@ -72,6 +73,6 @@ app.set('socket-port', argv.socket_port || 3010);
 
 var socketConfig = require('./socket')(app);
 
-var server = app.listen(app.get('port'), function() {
+var server = app.listen(app.get('port'), function () {
     debug('Express server listening on port ' + server.address().port);
 });
